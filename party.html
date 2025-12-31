@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تدشين مدرسة المعالي الثانوية</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            padding-top: 20px;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 0;
+            right: 40px;
+            z-index: 100;
+        }
+
+        .logo-container img {
+            width: 220px;
+            height: auto;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+        }
+
+        h1 {
+            color: #1a5f5a;
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .subtitle {
+            color: #c77d00;
+            font-size: 1.3em;
+            font-weight: 500;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .mind-map-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            margin: 0 auto;
+        }
+
+        .center-hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #1a5f5a 0%, #2d8b7f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            box-shadow: 0 15px 50px rgba(26, 95, 90, 0.4);
+            z-index: 20;
+            border: 6px solid white;
+        }
+
+        .station {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+        }
+
+        .station-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 4px solid white;
+            position: relative;
+        }
+
+        .station-label {
+            position: absolute;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: 700;
+            color: #1a5f5a;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 2px solid #1a5f5a;
+        }
+
+        .station:hover {
+            transform: scale(1.05);
+        }
+
+        .station:hover .station-circle {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+        }
+
+        .line {
+            position: absolute;
+            background: linear-gradient(90deg, rgba(26,95,90,0.3), rgba(184,134,11,0.3));
+            height: 3px;
+            transform-origin: left center;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        /* Station Colors - من ألوان اللوجو */
+        .teal { background: linear-gradient(135deg, #1a5f5a 0%, #2d8b7f 100%); }
+        .gold { background: linear-gradient(135deg, #b8860b 0%, #d4a429 100%); }
+        .orange { background: linear-gradient(135deg, #c77d00 0%, #e69500 100%); }
+        .beige { background: linear-gradient(135deg, #c5b8a0 0%, #d9cdb4 100%); }
+
+        /* Circular positions for stations */
+        .s1 { top: 5%; left: 50%; transform: translateX(-50%); }
+        .s2 { top: 18%; right: 15%; }
+        .s3 { top: 40%; right: 8%; }
+        .s4 { top: 65%; right: 15%; }
+        .s5 { bottom: 5%; right: 35%; }
+        .s6 { bottom: 5%; left: 35%; }
+        .s7 { top: 65%; left: 15%; }
+        .s8 { top: 40%; left: 8%; }
+        .s9 { top: 18%; left: 15%; }
+        .s10 { bottom: 5%; left: 50%; transform: translateX(-50%); }
+
+        /* Decorative Icons */
+        .decorative-icon {
+            position: absolute;
+            font-size: 150px;
+            opacity: 0.12;
+            z-index: 0;
+            pointer-events: none;
+            filter: grayscale(0.2);
+        }
+
+        .brain-icon {
+            top: 10%;
+            right: 3%;
+            transform: rotate(-15deg);
+        }
+
+        .book-icon {
+            bottom: 10%;
+            left: 2%;
+            transform: rotate(10deg);
+            font-size: 180px;
+            opacity: 0.15;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            position: relative;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #c77d00 0%, #e69500 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: linear-gradient(135deg, #b8860b 0%, #d4a429 100%);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        @media (max-width: 1024px) {
+            h1 { font-size: 2.5em; }
+            .subtitle { font-size: 1.1em; }
+            .logo-container img { width: 160px; }
+            .mind-map-container { height: 700px; }
+            .center-hub { width: 160px; height: 160px; font-size: 80px; }
+            .station-circle { width: 90px; height: 90px; font-size: 40px; }
+            .station-label { font-size: 0.9em; padding: 6px 12px; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .subtitle { font-size: 1em; }
+            .logo-container { right: 20px; }
+            .logo-container img { width: 130px; }
+            .mind-map-container { height: 600px; }
+            .center-hub { width: 130px; height: 130px; font-size: 65px; }
+            .station-circle { width: 75px; height: 75px; font-size: 35px; }
+            .station-label { 
+                font-size: 0.75em; 
+                padding: 5px 10px;
+                top: 85px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="logo.webp" alt="Maali Creative Schools">
+            </div>
+            <h1>تدشين مدرسة المعالي الثانوية</h1>
+            <p class="subtitle">توظيف التكنولوجيا والذكاء الاصطناعي لبناء جيل مبدع ومتميز</p>
+        </div>
+
+        <div class="mind-map-container" id="mindMap">
+            <!-- Decorative Icons -->
+            <div class="decorative-icon brain-icon">🧠</div>
+            <div class="decorative-icon book-icon">📖</div>
+
+            <!-- Center Brain -->
+            <div class="center-hub">🧠</div>
+
+            <!-- Stations -->
+            <div class="station s1" data-station="classroom">
+                <div class="station-circle teal">🎓</div>
+                <div class="station-label">فصل دراسي</div>
+            </div>
+
+            <div class="station s2" data-station="screens">
+                <div class="station-circle gold">🖥️</div>
+                <div class="station-label">غرفة الشاشات و IT</div>
+            </div>
+
+            <div class="station s3" data-station="computer">
+                <div class="station-circle orange">💻</div>
+                <div class="station-label">معمل الحاسب الآلي</div>
+            </div>
+
+            <div class="station s4" data-station="science">
+                <div class="station-circle teal">🔬</div>
+                <div class="station-label">معامل العلوم</div>
+            </div>
+
+            <div class="station s5" data-station="abilities">
+                <div class="station-circle gold">📚</div>
+                <div class="station-label">فصل القدرات</div>
+            </div>
+
+            <div class="station s6" data-station="innovation">
+                <div class="station-circle orange">💡</div>
+                <div class="station-label">الابتكار</div>
+            </div>
+
+            <div class="station s7" data-station="sports">
+                <div class="station-circle beige">⚽</div>
+                <div class="station-label">ملاعب</div>
+            </div>
+
+            <div class="station s8" data-station="admin">
+                <div class="station-circle gold">🏢</div>
+                <div class="station-label">الإدارة</div>
+            </div>
+
+            <div class="station s9" data-station="teacher">
+                <div class="station-circle teal">👨‍🏫</div>
+                <div class="station-label">المعلم</div>
+            </div>
+
+            <div class="station s10" data-station="vision">
+                <div class="station-circle orange">🔭</div>
+                <div class="station-label">الرؤية المستقبلية</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">✕</button>
+            <img id="modalImg" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        const images = {
+            classroom: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80',
+            screens: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80',
+            computer: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80',
+            science: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&q=80',
+            abilities: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80',
+            innovation: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80',
+            sports: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=800&q=80',
+            admin: 'https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=800&q=80',
+            teacher: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80',
+            vision: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80'
+        };
+
+        // Draw connecting lines
+        function drawLines() {
+            const mindMap = document.getElementById('mindMap');
+            const center = document.querySelector('.center-hub');
+            const stations = document.querySelectorAll('.station');
+            
+            // Remove old lines
+            document.querySelectorAll('.line').forEach(line => line.remove());
+            
+            const mapRect = mindMap.getBoundingClientRect();
+            const centerRect = center.getBoundingClientRect();
+            const centerX = centerRect.left + centerRect.width / 2 - mapRect.left;
+            const centerY = centerRect.top + centerRect.height / 2 - mapRect.top;
+
+            stations.forEach(station => {
+                const stationRect = station.getBoundingClientRect();
+                const stationX = stationRect.left + stationRect.width / 2 - mapRect.left;
+                const stationY = stationRect.top + stationRect.height / 2 - mapRect.top;
+                
+                const dx = stationX - centerX;
+                const dy = stationY - centerY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                
+                const line = document.createElement('div');
+                line.className = 'line';
+                line.style.width = distance + 'px';
+                line.style.left = centerX + 'px';
+                line.style.top = centerY + 'px';
+                line.style.transform = `rotate(${angle}deg)`;
+                
+                mindMap.insertBefore(line, mindMap.firstChild);
+            });
+        }
+
+        // Station click handlers
+        document.querySelectorAll('.station').forEach(station => {
+            station.addEventListener('click', function() {
+                const stationType = this.getAttribute('data-station');
+                const modal = document.getElementById('modal');
+                const modalImg = document.getElementById('modalImg');
+                
+                modalImg.src = images[stationType];
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on background click
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Initialize
+        window.addEventListener('load', drawLines);
+        window.addEventListener('resize', drawLines);
+    </script>
+</body>
+</html>
